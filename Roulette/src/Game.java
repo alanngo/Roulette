@@ -6,7 +6,7 @@ public class Game
 	{
 		in = new Scanner(System.in);
 	}
-	 void menu()
+	public void menu()
 	{
 		System.out.println("1. single bet");
 		System.out.println("2. multiple bet");
@@ -15,8 +15,11 @@ public class Game
 		System.out.println("5. red/black bet");
 		System.out.println("6. dozen bet");
 		System.out.println("7. row bet");
+		System.out.println("8. green bet AKA 0 and two other numbers");
+		System.out.println("9. Split bet");
+		System.out.println("10. Corner/Square bet");
 	}//end of menu
-	 void displayResult(Wheel wheel)
+	 public void displayResult(Wheel wheel)
 	{
 		System.out.println("Result: "+wheel.getResult());
 	}
@@ -25,7 +28,7 @@ public class Game
 		System.out.println("Your number: "+num);
 		System.out.println("Result: "+wheel.getResult());
 	}
-	  void displayResult(Wheel wheel, int[] numSet)
+	 public void displayResult(Wheel wheel, int[] numSet)
 	{	
 		System.out.println("Your numbers: ");
 		for(int i=0; i<numSet.length; i++)
@@ -35,15 +38,15 @@ public class Game
 		System.out.println("Result: "+wheel.getResult());
 	}
 	
-	  void singleBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	 public void singleBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("Choose a number: ");
-		int num=in.nextInt();
+		int choice=in.nextInt();
 		wheel.spin();
-		customer.bet(wheel, bet, num);
-		displayResult(wheel, num);
+		customer.bet(wheel, bet, choice);
+		displayResult(wheel, choice);
 	}
-	  void multipleBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	 public  void multipleBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("How many numbers do you want to bet on? ");
 		int size=in.nextInt();
@@ -57,7 +60,7 @@ public class Game
 		customer.bet(wheel, bet, numSet);
 		displayResult(wheel, numSet);
 	}
-	  void oddEvenBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	 public  void oddEvenBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("1.)Odd or 2.)Even? ");
 		int choice = in.nextInt();
@@ -74,7 +77,7 @@ public class Game
 		}
 		displayResult(wheel);
 	}
-	  void hiLoBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	public void hiLoBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("1.)1-18 or 2.)19-36? ");
 		int choice = in.nextInt();
@@ -91,7 +94,7 @@ public class Game
 		}
 		displayResult(wheel);
 	}
-	  void redBlackBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	public void redBlackBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("1.)Red or 2.)Black? ");
 		int choice = in.nextInt();
@@ -108,7 +111,7 @@ public class Game
 		}
 		displayResult(wheel);
 	}
-	  void dozenBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	public void dozenBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("1.)st [1-12] 2.)nd? [13-24] 3.)rd [25-36]");
 		int choice = in.nextInt();
@@ -129,7 +132,7 @@ public class Game
 		}
 		displayResult(wheel);
 	}
-	  void rowBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	public void rowBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
 	{
 		System.out.print("1.)st 1,4,7...34 2.)nd? 2,5,8...35 3.)rd 3,6,9...36");
 		int choice = in.nextInt();
@@ -150,8 +153,41 @@ public class Game
 		}
 		displayResult(wheel);
 	}
-	
-	  void handleOptions(Customer customer, Wheel wheel, double bet, int option)
+	public void greenBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	{
+		wheel.spin();
+		System.out.print("Enter your choice 1.) {0,1,2} 2.) {0,2,3} ");
+		int choice= in.nextInt();
+		customer.betGreen(wheel, bet, choice);
+		displayResult(wheel);
+	}
+	public void splitBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	{
+		wheel.spin();
+		System.out.print("Enter your choice");
+		int choice= in.nextInt();
+		System.out.print("Enter your adjacent");
+		int adjacent= in.nextInt();
+		customer.betSplit(wheel, bet, choice, adjacent);
+		displayResult(wheel, choice);
+		
+	}
+	public void cornerBet(Customer customer, Wheel wheel, double bet) throws NegativeBalanceException
+	{
+		//TODO
+		wheel.spin();
+		System.out.print("Enter your choice  ");
+		int choice=in.nextInt();
+		System.out.print("Enter adjacent1  ");
+		int adj1=in.nextInt();
+		System.out.print("Enter adjacent2  ");
+		int adj2=in.nextInt();
+		System.out.print("Enter diagonal  ");
+		int diagonal=in.nextInt();
+		customer.betCorner(wheel, bet, choice, adj1, adj2, diagonal);
+		displayResult(wheel, choice);
+	}
+	public void handleOptions(Customer customer, Wheel wheel, double bet, int option)
 	{
 		try
 		{
@@ -178,6 +214,15 @@ public class Game
 				case 7:
 					rowBet(customer, wheel, bet);
 					break;
+				case 8:
+					greenBet(customer, wheel, bet);
+					break;
+				case 9:
+					splitBet(customer, wheel, bet);
+					break;
+				case 10:
+					cornerBet(customer, wheel, bet);
+					break;
 			}
 		}
 		catch(NegativeBalanceException n)
@@ -187,4 +232,4 @@ public class Game
 		
 	}
 
-}
+}//end of class

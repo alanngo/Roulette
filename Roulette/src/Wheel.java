@@ -17,4 +17,8 @@ public class Wheel
 	{
 		return result;
 	}
+	public String toString()
+	{
+		return "Result: "+result;
+	}
 }
